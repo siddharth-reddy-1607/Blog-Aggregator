@@ -36,7 +36,10 @@ func main(){
     serveMux.Handle("GET /v1/error",api.ErrorHandler())
 
     serveMux.Handle("POST /v1/users",apiConfig.CreateUserHandler())
-    serveMux.Handle("GET /v1/users",apiConfig.GetUserHandler())
+    serveMux.Handle("GET /v1/users",apiConfig.AuthMiddleware(apiConfig.GetUserHandler))
+
+    serveMux.Handle("POST /v1/feeds",apiConfig.AuthMiddleware(apiConfig.CreateFeedHandler))
+    serveMux.Handle("GET /v1/feeds",apiConfig.GetFeedsHandler())
 
     log.Printf("Listening and Serving on port %v",PORT)
     server.ListenAndServe()
