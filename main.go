@@ -41,6 +41,10 @@ func main(){
     serveMux.Handle("POST /v1/feeds",apiConfig.AuthMiddleware(apiConfig.CreateFeedHandler))
     serveMux.Handle("GET /v1/feeds",apiConfig.GetFeedsHandler())
 
+    serveMux.Handle("POST /v1/feed_follows",apiConfig.AuthMiddleware(apiConfig.CreateFeedFollowHandler))
+    serveMux.Handle("GET /v1/feed_follows",apiConfig.AuthMiddleware(apiConfig.GetFeedFollowsHandler))
+    serveMux.Handle("DELETE /v1/feed_follows/{feedFollowID}",apiConfig.AuthMiddleware(apiConfig.DeleteFeedFollowHandler))
+
     log.Printf("Listening and Serving on port %v",PORT)
     server.ListenAndServe()
 }

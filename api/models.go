@@ -42,3 +42,21 @@ func databaseFeedToFeed(f *database.Feed) *Feed{
         UserID: f.UserID,
     }
 }
+
+type FeedFollow struct {
+	ID        uuid.UUID
+	UserID    uuid.UUID
+	FeedID    uuid.UUID
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+func databaseFeedFollowToFeedFollow(f *database.FeedFollow) *FeedFollow{
+    return &FeedFollow{
+        ID: f.ID,
+        UserID: f.UserID,
+        FeedID: f.FeedID,
+        CreatedAt: f.CreatedAt,
+        UpdatedAt: f.UpdatedAt,
+    }
+}

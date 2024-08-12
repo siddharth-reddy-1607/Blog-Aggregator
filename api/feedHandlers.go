@@ -29,7 +29,16 @@ func (apiConfig *APIConfig) CreateFeedHandler(w http.ResponseWriter,r *http.Requ
         utils.RespondWithError(w,http.StatusInternalServerError,"Error while creating feed")
         return
     }
-    utils.RespondWithJSON(w,http.StatusCreated,databaseFeedToFeed(&feed))
+    curTime = time.Now()
+    feedFollow,err := apiConfig.DBQueries.CreateFeedFollow(r.Context(),database.CreateFeedFollowParams{ID: uuid.New(),
+                                                                                                     UserID: (*user).ID,
+                                                                                                     FeedID: feed.ID,
+                                                                                                     CreatedAt: curTime,
+                                                                                                     UpdatedAt: curTime})
+    responseJSON := struct{Feed *Feed `json:"feed"`
+                           FeedFollow *FeedFollow `json:"feed_follow"`}{Feed : databaseFeedToFeed(&feed),
+                                                                        FeedFollow: databaseFeedFollowToFeedFollow(&feedFollow)}
+    utils.RespondWithJSON(w,http.StatusCreated,responseJSON)
 }
 
 func (apiConfig *APIConfig) GetFeedsHandler() http.Handler{
