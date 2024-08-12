@@ -60,3 +60,22 @@ func databaseFeedFollowToFeedFollow(f *database.FeedFollow) *FeedFollow{
         UpdatedAt: f.UpdatedAt,
     }
 }
+
+type Post struct{
+	ID          uuid.UUID
+	Title       string
+	Url         string
+	Description string
+	PublishedAt time.Time
+    FeedUrl string
+}
+
+func databasePostToPost(p *database.GetPostsRow) (*Post){
+    return &Post{
+        ID : p.ID,
+        Title: p.Title,
+        Description: p.Description,
+        Url : p.Url,
+        PublishedAt: p.PublishedAt,
+        FeedUrl: p.FeedUrl,}
+}

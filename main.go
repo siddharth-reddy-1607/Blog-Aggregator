@@ -9,6 +9,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/siddharth-reddy-1607/Blog-Aggregator/api"
 	"github.com/siddharth-reddy-1607/Blog-Aggregator/internal/database"
+	"github.com/siddharth-reddy-1607/Blog-Aggregator/utils"
 )
 
 func main(){
@@ -32,6 +33,8 @@ func main(){
         Addr: ":"+PORT,
     }
 
+    go utils.ProcessFeeds(dbQueries,2)
+
     serveMux.Handle("GET /v1/healthz",api.HealthHandler())
     serveMux.Handle("GET /v1/error",api.ErrorHandler())
 
@@ -45,6 +48,9 @@ func main(){
     serveMux.Handle("GET /v1/feed_follows",apiConfig.AuthMiddleware(apiConfig.GetFeedFollowsHandler))
     serveMux.Handle("DELETE /v1/feed_follows/{feedFollowID}",apiConfig.AuthMiddleware(apiConfig.DeleteFeedFollowHandler))
 
+    serveMux.Handle("GET /v1/posts",apiConfig.AuthMiddleware(apiConfig.GetPosts))
+
     log.Printf("Listening and Serving on port %v",PORT)
     server.ListenAndServe()
+
 }

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
-
 	"github.com/google/uuid"
 	"github.com/siddharth-reddy-1607/Blog-Aggregator/internal/database"
 	"github.com/siddharth-reddy-1607/Blog-Aggregator/utils"
